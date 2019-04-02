@@ -4,7 +4,6 @@
 
 [![Build Status](https://travis-ci.org/timkpaine/{{ cookiecutter.extension_name }}.svg?branch=master)](https://travis-ci.org/timkpaine/{{ cookiecutter.extension_name }})
 [![GitHub issues](https://img.shields.io/github/issues/timkpaine/{{ cookiecutter.extension_name }}.svg)]()
-[![Waffle.io](https://badge.waffle.io/timkpaine/{{ cookiecutter.extension_name }}.svg?label=ready&title=Ready)](http://waffle.io/timkpaine/{{ cookiecutter.extension_name }})
 [![codecov](https://codecov.io/gh/timkpaine/{{ cookiecutter.extension_name }}/branch/master/graph/badge.svg)](https://codecov.io/gh/timkpaine/{{ cookiecutter.extension_name }})
 [![BCH compliance](https://bettercodehub.com/edge/badge/timkpaine/{{ cookiecutter.extension_name }}?branch=master)](https://bettercodehub.com/)
 [![PyPI](https://img.shields.io/pypi/l/{{ cookiecutter.extension_name }}.svg)](https://pypi.python.org/pypi/{{ cookiecutter.extension_name }})
