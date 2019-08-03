@@ -2,7 +2,15 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
+from jupyter_packaging import ensure_python, get_version
+
 here = path.abspath(path.dirname(__file__))
+
+pjoin = path.join
+
+ensure_python(('2.7', '>=3.3'))
+name = '{{ cookiecutter.extension_name }}'
+version = get_version(pjoin(here, name, '_version.py'))
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
@@ -12,7 +20,7 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 setup(
     name='{{ cookiecutter.extension_name }}',
-    version='{{VERSION}}',
+    version=version,
     description='{{ cookiecutter.project_short_description }}',
     long_description=long_description,
     url='{{REPO_URL}}',
