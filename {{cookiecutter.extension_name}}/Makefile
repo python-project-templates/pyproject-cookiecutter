@@ -5,14 +5,14 @@ build:  ## Build the repository
 	python3 setup.py build 
 
 testjs: ## Clean and Make js tests
-	npm run test
+	yarn test
 
 testpy: ## Clean and Make unit tests
 	python3 -m pytest -v tests --cov={{ cookiecutter.extension_name }}
 
 test: lint ## run the tests for travis CI
 	@ python3 -m pytest -v tests --cov={{ cookiecutter.extension_name }}
-	npm install && npm run test
+	yarn test
 
 lint: ## run linter
 	pylint {{ cookiecutter.extension_name }} || echo
@@ -28,24 +28,31 @@ clean: ## clean the repository
 	find . -name "__pycache__" | xargs  rm -rf 
 	find . -name "*.pyc" | xargs rm -rf 
 	find . -name ".ipynb_checkpoints" | xargs  rm -rf 
-	rm -rf .coverage cover htmlcov logs build dist *.egg-info
+	rm -rf .coverage coverage cover htmlcov logs build dist *.egg-info lib node_modules
 	make -C ./docs clean
-
-serverextension: install ## enable serverextension
-	jupyter serverextension enable --py {{ cookiecutter.extension_name }}
 
 labextension: install ## enable labextension
 	jupyter labextension install .
 
 install:  ## install to site-packages
-	python3 setup.py install
+	pip3 install .
+
+serverextension: install ## enable serverextension
+	jupyter serverextension enable --py jupyterlab_celltests
+
+js:  ## build javascript
+	yarn
+	yarn build
 
 docs:  ## make documentation
 	make -C ./docs html
 	open ./docs/_build/html/index.html
 
-dist:  ## dist to pypi
-	python3 setup.py sdist upload -r pypi
+dist: js  ## dist to pypi
+	rm -rf dist build
+	python3 setup.py sdist
+	python3 setup.py bdist_wheel
+	twine check dist/* && twine upload dist/*
 
 # Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
@@ -55,4 +62,4 @@ help:
 print-%:
 	@echo '$*=$($*)'
 
-.PHONY: clean build run test tests help annotate annotate_l docs dist
+.PHONY: clean build run test tests help annotate annotate_l docs dist install serverextension labextension 

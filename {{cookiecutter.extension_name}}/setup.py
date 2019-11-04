@@ -2,13 +2,14 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-from jupyter_packaging import ensure_python, get_version
+from jupyter_packaging import (
+    create_cmdclass, install_npm, ensure_targets,
+    combine_commands, ensure_python, get_version
+)
 
+ensure_python(('2.7', '>=3.7'))
 here = path.abspath(path.dirname(__file__))
-
 pjoin = path.join
-
-ensure_python(('2.7', '>=3.3'))
 name = '{{ cookiecutter.extension_name }}'
 version = get_version(pjoin(here, name, '_version.py'))
 
@@ -17,6 +18,28 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requires = f.read().split()
+
+
+data_spec = [
+    # Lab extension installed by default:
+    ('share/jupyter/lab/extensions',
+     'lab-dist',
+     'jupyterlab_autoversion-*.tgz'),
+    # Config to enable server extension by default:
+    ('etc/jupyter',
+     'jupyter-config',
+     '**/*.json'),
+]
+
+
+cmdclass = create_cmdclass('js', data_files_spec=data_spec)
+cmdclass['js'] = combine_commands(
+    install_npm(here, build_cmd='build:all'),
+    ensure_targets([
+        pjoin(here, 'lib', 'index.js'),
+        pjoin(here, 'style', 'index.css')
+    ]),
+)
 
 setup(
     name='{{ cookiecutter.extension_name }}',
@@ -41,8 +64,11 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
 
+    cmdclass=cmdclass,
     keywords='',
-    packages=find_packages(exclude=[]),
+    packages=find_packages(exclude=['tests', ]),
     install_requires=requires,
-    extras_require={'dev': requires + ['pytest', 'pytest-cov', 'pylint', 'flake8']}
+    extras_require={'dev': requires + ['pytest', 'pytest-cov', 'pylint', 'flake8', 'bumpversion']},
+    include_package_data=True,
+    zip_safe=False,
 )
