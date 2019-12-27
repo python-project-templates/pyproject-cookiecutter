@@ -24,6 +24,17 @@ import subprocess
 import sphinx_rtd_theme
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+_version_py = os.path.join('..', '..', 'jupyterlab', '_version.py')
+version_ns = {}
+
+with open(_version_py, mode='r') as version_file:
+    exec(version_file.read(), version_ns)
+
+# The short X.Y version.
+version = '%i.%i' % version_ns['version_info'][:2]
+# The full version, including alpha/beta/rc tags.
+release = version_ns['__version__']
+
 
 # -- General configuration ------------------------------------------------
 
@@ -50,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = '{{ cookiecutter.extension_name }}'
-copyright = '2018, Tim Paine'
+copyright = '2019, Tim Paine'
 author = 'Tim Paine'
 
 # The version info for the project you're documenting, acts as replacement for
