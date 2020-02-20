@@ -1,6 +1,3 @@
-# Copyright (c) Jupyter Development Team.
-# Distributed under the terms of the Modified BSD License.
-
 from collections import namedtuple
 
 VersionInfo = namedtuple('VersionInfo', [
@@ -12,7 +9,7 @@ VersionInfo = namedtuple('VersionInfo', [
 ])
 
 # DO NOT EDIT THIS DIRECTLY!  It is managed by bumpversion
-version_info = VersionInfo(0, 0, 1, 'alpha', 0)
+version_info = VersionInfo(0, 0, 1, 'final', 0)
 
 _specifier_ = {'alpha': 'a', 'beta': 'b', 'candidate': 'rc', 'final': ''}
 
@@ -22,4 +19,4 @@ __version__ = '{}.{}.{}{}'.format(
     version_info.micro,
     (''
      if version_info.releaselevel == 'final'
-     else _specifier_[version_info.releaselevel] + str(version_info.serial)))
+     else _specifier_[version_info.releaselevel] + "." + str(version_info.serial)))

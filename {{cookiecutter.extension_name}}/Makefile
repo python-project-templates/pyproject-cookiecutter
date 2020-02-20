@@ -8,10 +8,10 @@ testjs: ## Clean and Make js tests
 	yarn test
 
 testpy: ## Clean and Make unit tests
-	python3.7 -m pytest -v tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
+	python3.7 -m pytest -v {{ cookiecutter.extension_name }}/tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
 
 tests: lint ## run the tests
-	python3.7 -m pytest -v tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
+	python3.7 -m pytest -v {{ cookiecutter.extension_name }}/tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
 	yarn test
 
 lint: ## run linter
