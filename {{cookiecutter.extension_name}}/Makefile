@@ -1,17 +1,17 @@
 run:  ## clean and make target, run target
-	python3 -m {{ cookiecutter.extension_name }}
+	python3.7 -m {{ cookiecutter.extension_name }}
 
 build:  ## Build the repository
-	python3 setup.py build 
+	python3.7 setup.py build 
 
 testjs: ## Clean and Make js tests
 	yarn test
 
 testpy: ## Clean and Make unit tests
-	python3 -m pytest -v tests --cov={{ cookiecutter.extension_name }}
+	python3.7 -m pytest -v tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
 
-test: lint ## run the tests for travis CI
-	@ python3 -m pytest -v tests --cov={{ cookiecutter.extension_name }}
+tests: lint ## run the tests
+	python3.7 -m pytest -v tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
 	yarn test
 
 lint: ## run linter

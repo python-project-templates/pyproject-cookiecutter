@@ -2,9 +2,9 @@
 
 {{ cookiecutter.project_short_description }}
 
-[![Build Status](https://travis-ci.org/timkpaine/{{ cookiecutter.extension_name }}.svg?branch=master)](https://travis-ci.org/timkpaine/{{ cookiecutter.extension_name }})
+[![Build Status]()]()
 [![GitHub issues](https://img.shields.io/github/issues/timkpaine/{{ cookiecutter.extension_name }}.svg)]()
-[![codecov](https://codecov.io/gh/timkpaine/{{ cookiecutter.extension_name }}/branch/master/graph/badge.svg)](https://codecov.io/gh/timkpaine/{{ cookiecutter.extension_name }})
+[![Coverage]()]()
 [![BCH compliance](https://bettercodehub.com/edge/badge/timkpaine/{{ cookiecutter.extension_name }}?branch=master)](https://bettercodehub.com/)
 [![PyPI](https://img.shields.io/pypi/l/{{ cookiecutter.extension_name }}.svg)](https://pypi.python.org/pypi/{{ cookiecutter.extension_name }})
 [![PyPI](https://img.shields.io/pypi/v/{{ cookiecutter.extension_name }}.svg)](https://pypi.python.org/pypi/{{ cookiecutter.extension_name }})
