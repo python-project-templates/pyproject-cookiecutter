@@ -163,3 +163,4 @@ typings/
 yarn.lock
 package-lock.json
 .autoversion
+docs/index.md
