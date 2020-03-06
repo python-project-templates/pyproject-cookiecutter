@@ -41,6 +41,7 @@ requires = [
 ]
 
 requires_dev = [
+    'bump2version',
     'flake8>=3.7.8',
     'mock',
     'pybind11>=2.4.0',
@@ -56,8 +57,8 @@ setup(
     version=version,
     description='{{ cookiecutter.project_short_description }}',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='{{REPO_URL}}',
-    download_url='{{REPO_URL}}/archive/v{{VERSION}}.tar.gz',
     author='Tim Paine',
     author_email='timothy.k.paine@gmail.com',
     license='Apache 2.0',

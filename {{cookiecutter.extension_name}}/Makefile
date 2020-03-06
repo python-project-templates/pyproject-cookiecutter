@@ -38,7 +38,7 @@ install:  ## install to site-packages
 	pip3 install .
 
 serverextension: install ## enable serverextension
-	jupyter serverextension enable --py jupyterlab_celltests
+	jupyter serverextension enable --py {{cookiecutter.extension_name}}
 
 js:  ## build javascript
 	yarn
@@ -50,8 +50,7 @@ docs:  ## make documentation
 
 dist: js  ## dist to pypi
 	rm -rf dist build
-	python3 setup.py sdist
-	python3 setup.py bdist_wheel
+	python3.7 setup.py sdist bdist_wheel
 	twine check dist/* && twine upload dist/*
 
 # Thanks to Francoise at marmelab.com for this
