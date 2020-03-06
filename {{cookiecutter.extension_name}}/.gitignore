@@ -163,4 +163,6 @@ typings/
 yarn.lock
 package-lock.json
 .autoversion
+docs/api
 docs/index.md
+python_junit.xml
