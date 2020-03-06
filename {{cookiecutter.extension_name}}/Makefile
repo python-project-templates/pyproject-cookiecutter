@@ -48,10 +48,13 @@ docs:  ## make documentation
 	make -C ./docs html
 	open ./docs/_build/html/index.html
 
-dist: js  ## dist to pypi
+dist: js  ## create dists
 	rm -rf dist build
 	python3.7 setup.py sdist bdist_wheel
+
+publish: dist  ## dist to pypi and npm
 	twine check dist/* && twine upload dist/*
+	npm publish
 
 # Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
