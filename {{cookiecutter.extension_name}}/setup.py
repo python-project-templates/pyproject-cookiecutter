@@ -6,10 +6,11 @@ from jupyter_packaging import (
     create_cmdclass, install_npm, ensure_targets,
     combine_commands, ensure_python, get_version
 )
+pjoin = path.join
 
 ensure_python(('2.7', '>=3.7'))
 here = path.abspath(path.dirname(__file__))
-pjoin = path.join
+jshere = path.abspath(pjoin(path.dirname(__file__), 'js'))
 name = '{{ cookiecutter.extension_name }}'
 version = get_version(pjoin(here, name, '_version.py'))
 
@@ -30,10 +31,10 @@ data_spec = [
 
 cmdclass = create_cmdclass('js', data_files_spec=data_spec)
 cmdclass['js'] = combine_commands(
-    install_npm(here, build_cmd='build:all'),
+    install_npm(jshere, build_cmd='build:all'),
     ensure_targets([
-        pjoin(here, 'lib', 'index.js'),
-        pjoin(here, 'style', 'index.css')
+        pjoin(jshere, 'lib', 'index.js'),
+        pjoin(jshere, 'style', 'index.css')
     ]),
 )
 

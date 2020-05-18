@@ -5,14 +5,14 @@ build:  ## Build the repository
 	python3.7 setup.py build 
 
 testjs: ## Clean and Make js tests
-	yarn test
+	cd js; yarn test
 
 testpy: ## Clean and Make unit tests
 	python3.7 -m pytest -v {{ cookiecutter.extension_name }}/tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
 
 tests: lint ## run the tests
 	python3.7 -m pytest -v {{ cookiecutter.extension_name }}/tests --cov={{ cookiecutter.extension_name }} --junitxml=python_junit.xml --cov-report=xml --cov-branch
-	yarn test
+	cd js; yarn test
 
 lint: ## run linter
 	pylint {{ cookiecutter.extension_name }} || echo
@@ -32,7 +32,7 @@ clean: ## clean the repository
 	make -C ./docs clean
 
 labextension: install ## enable labextension
-	jupyter labextension install .
+	cd js; jupyter labextension install .
 
 install:  ## install to site-packages
 	pip3 install .
@@ -41,8 +41,8 @@ serverextension: install ## enable serverextension
 	jupyter serverextension enable --py {{cookiecutter.extension_name}}
 
 js:  ## build javascript
-	yarn
-	yarn build
+	cd js; yarn
+	cd js; yarn build
 
 docs:  ## make documentation
 	make -C ./docs html
@@ -54,7 +54,7 @@ dist: js  ## create dists
 
 publish: dist  ## dist to pypi and npm
 	twine check dist/* && twine upload dist/*
-	npm publish
+	cd js; npm publish
 
 # Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
