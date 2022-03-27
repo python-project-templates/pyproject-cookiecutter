@@ -46,6 +46,10 @@ jobs:
         python -m pip install -e .[dev]
         cd js; yarn
 
+    - name: Build
+      run: |
+        make build
+
     - name: Lint
       run: |
         make lint
