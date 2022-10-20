@@ -1,6 +1,9 @@
 {
-    "author_name": "",
-    "project_name": "myproject",
-    "project_short_description": "My python project.",
-    "repository": "https://github.com/my_name/project_name"
+    "name": "my-project",
+    "description": "My python project.",
+    "url": "https://github.com/my_name/project_name",
+    "author": "",
+    "github_account": "",
+    "email": "",
+    "pattern": ["python", "cpp", "rust", "js", "jupyter"]
 }

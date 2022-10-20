@@ -1,0 +1,135 @@
+name: Build Status
+
+on:
+  push:
+    branches:
+      - main
+      # NOTE: can delete these, used by CI
+      - python
+      - cpp
+      - js
+      - jupyter
+      - rust
+    tags:
+      - v*
+    paths-ignore:
+      - docs/
+      - CONTRIBUTING.md
+      - LICENSE
+      - README.md
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: {%raw%}${{ github.workflow }}-${{ github.head_ref || github.run_id }}{%endraw%}
+  cancel-in-progress: true
+
+permissions:
+  checks: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: {%raw%}${{ matrix.os }}{%endraw%}
+
+    strategy:
+      matrix:
+{%- if cookiecutter.pattern in ("cpp", "rust") %}
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.8, 3.9, 3.10]
+{%- else %}
+        os: [ubuntu-latest]
+        python-version: [3.9]
+{%- endif %}
+{%- if cookiecutter.pattern in ("js", "jupyter") %}
+        node-version: [16.x]
+{%- endif %}
+{%- if cookiecutter.pattern in ("cpp", "rust") %}
+        exclude:
+          # NOTE: feel free to modify,
+          # this is to minimize CI resources
+          - os: macos-latest
+            python-version: 3.8
+
+          - os: macos-latest
+            python-version: 3.10
+
+          - os: windows-latest
+            python-version: 3.8
+
+          - os: windows-latest
+            python-version: 3.10
+{%- endif %}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python {%raw%}${{ matrix.python-version }}{%endraw%}
+      uses: actions/setup-python@v4
+      with:
+        python-version: {%raw%}${{ matrix.python-version }}{%endraw%}
+        cache: 'pip'
+        cache-dependency-path: 'setup.py'
+
+{%- if cookiecutter.pattern in ("js", "jupyter") %}
+    - name: Use Node.js {%raw%}${{ matrix.node-version }}{%endraw%}
+      uses: actions/setup-node@v3
+      with:
+        node-version: {%raw%}${{ matrix.node-version }}{%endraw%}
+        cache: 'yarn'
+        cache-dependency-path: js/yarn.lock
+
+    - name: Install yarn
+      run: npm install -g yarn
+{%- endif %}
+
+    - name: Install dependencies
+      run: |
+        make develop
+
+    - name: Lint
+      run: |
+        make lint
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
+
+    - name: Checks
+      run: |
+        make checks
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
+
+    - name: Build
+      run: |
+        make build
+{%- if cookiecutter.pattern == "cpp" %}
+      if: {%raw%}${{ matrix.os != 'windows-latest' }}{%endraw%}
+
+    - name: Build - Windows
+      run: |
+        make build
+      env:
+        CMAKE_GENERATOR: Visual Studio 17 2022
+      if: {%raw%}${{ matrix.os == 'windows-latest' }}{%endraw%}
+{%- endif %}
+
+    - name: Test
+      run: |
+        make tests
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: {%raw%}pytest-results-${{ matrix.os }}-${{ matrix.python-version }}{%endraw%}
+        path: python_junit.xml
+      if: {%raw%}${{ always() }}{%endraw%}
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      with:
+        files: python_junit.xml
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3

@@ -1,0 +1,119 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      # NOTE: can delete these, used by CI
+      - python
+      - cpp
+      - js
+      - jupyter
+      - rust
+    tags:
+      - v*
+
+concurrency:
+  group: {%raw%}${{ github.workflow }}-${{ github.head_ref || github.run_id }}{%endraw%}
+  cancel-in-progress: true
+
+jobs:
+  dist:
+    runs-on: {%raw%}${{ matrix.os }}{%endraw%}
+
+    strategy:
+      fail-fast: false
+      matrix:
+{%- if cookiecutter.pattern == "cpp" %}
+        os: [ubuntu-latest, macos-latest, windows-latest]
+{%- else %}
+        os: [ubuntu-latest]
+{%- endif %}
+
+{%- if cookiecutter.pattern in ("js", "jupyter") %}
+        node-version: [16.x]
+{%- endif %}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python {%raw%}${{ matrix.python-version }}{%endraw%}
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+        cache: 'pip'
+        cache-dependency-path: 'setup.py'
+
+{%- if cookiecutter.pattern in ("js", "jupyter") %}
+    - name: Use Node.js {%raw%}${{ matrix.node-version }}{%endraw%}
+      uses: actions/setup-node@v3
+      with:
+        node-version: {%raw%}${{ matrix.node-version }}{%endraw%}
+        cache: 'yarn'
+        cache-dependency-path: js/yarn.lock
+
+    - name: Install yarn
+      run: npm install -g yarn
+{%- endif %}
+
+    - name: Install dependencies
+      run: |
+        make develop
+
+{%- if cookiecutter.pattern != "cpp" %}
+    - name: Make python dist
+      run: |
+        make dist-py
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/*.tar.gz
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/*.whl
+
+{%- else %}
+    - name: Make sdist
+      run: |
+        make dist-py-sdist
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '39' }}{%endraw%}
+
+    - name: Install cibuildwheel
+      run: |
+        python -m pip install cibuildwheel
+
+    - name: Build wheels
+      uses: pypa/cibuildwheel@v2.11.1
+      env:
+        CIBW_BUILD: "cp37-ma*64 cp38-ma*64 cp39-ma*64"
+        CIBW_BUILD_VERBOSITY: 2
+        # needed for m1 builds
+        CIBW_ENVIRONMENT_MACOS: "CFLAGS='-I/usr/local/include -L/usr/local/lib' CXXFLAGS='-I/usr/local/include -L/usr/local/lib' LDFLAGS='-L/usr/local/lib'"
+        CIBW_ARCHS_MACOS: "x86_64 arm64"
+      with:
+        package-dir: .
+        output-dir: wheelhouse
+      if: {%raw%}${{ matrix.os != 'windows-latest' }}{%endraw%}
+
+    - name: Build wheels - Windows
+      uses: pypa/cibuildwheel@v2.11.1
+      env:
+        CMAKE_GENERATOR: Visual Studio 17 2022
+        CIBW_BUILD: "cp37*amd64 cp38*amd64 cp39*amd64"
+        CIBW_BUILD_VERBOSITY: 2
+      with:
+        package-dir: .
+        output-dir: wheelhouse
+      if: {%raw%}${{ matrix.os == 'windows-latest' }}{%endraw%}
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/*.tar.gz
+      if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: ./wheelhouse/*.whl
+{%- endif %}
