@@ -71,7 +71,7 @@ jobs:
       with:
         python-version: {%raw%}${{ matrix.python-version }}{%endraw%}
         cache: 'pip'
-        cache-dependency-path: 'setup.py'
+        cache-dependency-path: 'pyproject.toml'
 
 {%- if cookiecutter.pattern in ("js", "jupyter") %}
     - name: Use Node.js {%raw%}${{ matrix.node-version }}{%endraw%}
