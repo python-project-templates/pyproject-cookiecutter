@@ -77,8 +77,8 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "{{cookiecutter.url}}"
-homepage = "{{cookiecutter.url}}"
+Repository = "{{cookiecutter.url}}"
+Homepage = "{{cookiecutter.url}}"
 
 [project.optional-dependencies]
 develop = [
