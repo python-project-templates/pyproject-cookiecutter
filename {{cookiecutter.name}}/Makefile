@@ -117,7 +117,7 @@ semgrep:
 # TESTS #
 #########
 test-py:  ## run python tests
-	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=python_junit.xml
+	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=junit.xml
 
 {%- if cookiecutter.pattern in ("js", "jupyter") %}
 test-js: ## run javascript tests
@@ -125,7 +125,7 @@ test-js: ## run javascript tests
 {%- endif %}
 
 coverage-py:  ## run tests and collect test coverage
-	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=python_junit.xml --cov={{cookiecutter.module}} --cov-report=xml:.coverage/coverage.xml --cov-report=html:.coverage/coverage.html --cov-branch --cov-fail-under=80 --cov-report term-missing
+	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=junit.xml --cov={{cookiecutter.module}} --cov-report=xml:.coverage/coverage.xml --cov-report=html:.coverage/coverage.html --cov-branch --cov-fail-under=80 --cov-report term-missing
 
 show-coverage: coverage-py  ## show interactive python coverage viewer
 	cd .coverage && PYTHONBUFFERED=1 python -m http.server | sec -u "s/0\.0\.0\.0/$$(hostname)/g"

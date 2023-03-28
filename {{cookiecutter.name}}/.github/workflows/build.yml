@@ -118,17 +118,27 @@ jobs:
         make tests
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
-    - name: Upload test results
+    - name: Upload test results (Python)
       uses: actions/upload-artifact@v3
       with:
         name: {%raw%}pytest-results-${{ matrix.os }}-${{ matrix.python-version }}{%endraw%}
-        path: python_junit.xml
+        path: junit.xml
       if: {%raw%}${{ always() }}{%endraw%}
 
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
+{%- if cookiecutter.pattern in ("js", "jupyter") %}
+    - name: Upload test results (JS)
+      uses: actions/upload-artifact@v3
       with:
-        files: python_junit.xml
+        name: {%raw%}pytest-results-${{ matrix.os }}-${{ matrix.python-version }}{%endraw%}
+        path: junit.xml
+      if: {%raw%}${{ always() }}{%endraw%}
+{%- endif %}
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        files: |
+            **/junit.xml
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
     - name: Upload coverage
