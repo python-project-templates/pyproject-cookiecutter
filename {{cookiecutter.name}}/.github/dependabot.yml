@@ -8,7 +8,9 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+{%- if cookiecutter.pattern in ("js", "jupyter") %}
   - package-ecosystem: "yarn"
     directory: "/"
     schedule:
       interval: "monthly"
+{%- endif %}
