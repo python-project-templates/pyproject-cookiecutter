@@ -86,49 +86,53 @@ jobs:
 {%- endif %}
 
     - name: Install dependencies
-      run: |
-        make develop
+      run: make develop
 
     - name: Lint
-      run: |
-        make lint
+      run: make lint
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
     - name: Checks
-      run: |
-        make checks
+      run: make checks
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
     - name: Build
-      run: |
-        make build
+      run: make build
 {%- if cookiecutter.pattern == "cpp" %}
       if: {%raw%}${{ matrix.os != 'windows-latest' }}{%endraw%}
 
     - name: Build - Windows
-      run: |
-        make build
+      run: make build
       env:
         CMAKE_GENERATOR: Visual Studio 17 2022
       if: {%raw%}${{ matrix.os == 'windows-latest' }}{%endraw%}
 {%- endif %}
 
     - name: Test
-      run: |
-        make tests
+      run: make tests
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
-    - name: Upload test results
+    - name: Upload test results (Python)
       uses: actions/upload-artifact@v3
       with:
         name: {%raw%}pytest-results-${{ matrix.os }}-${{ matrix.python-version }}{%endraw%}
-        path: python_junit.xml
+        path: junit.xml
       if: {%raw%}${{ always() }}{%endraw%}
 
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
+{%- if cookiecutter.pattern in ("js", "jupyter") %}
+    - name: Upload test results (JS)
+      uses: actions/upload-artifact@v3
       with:
-        files: python_junit.xml
+        name: {%raw%}pytest-results-${{ matrix.os }}-${{ matrix.python-version }}{%endraw%}
+        path: junit.xml
+      if: {%raw%}${{ always() }}{%endraw%}
+{%- endif %}
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        files: |
+            **/junit.xml
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
     - name: Upload coverage
