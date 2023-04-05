@@ -86,36 +86,30 @@ jobs:
 {%- endif %}
 
     - name: Install dependencies
-      run: |
-        make develop
+      run: make develop
 
     - name: Lint
-      run: |
-        make lint
+      run: make lint
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
     - name: Checks
-      run: |
-        make checks
+      run: make checks
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
     - name: Build
-      run: |
-        make build
+      run: make build
 {%- if cookiecutter.pattern == "cpp" %}
       if: {%raw%}${{ matrix.os != 'windows-latest' }}{%endraw%}
 
     - name: Build - Windows
-      run: |
-        make build
+      run: make build
       env:
         CMAKE_GENERATOR: Visual Studio 17 2022
       if: {%raw%}${{ matrix.os == 'windows-latest' }}{%endraw%}
 {%- endif %}
 
     - name: Test
-      run: |
-        make tests
+      run: make tests
       if: {%raw%}${{ matrix.os == 'ubuntu-latest' }}{%endraw%}
 
     - name: Upload test results (Python)

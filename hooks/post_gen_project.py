@@ -13,6 +13,7 @@ if __name__ == "__main__":
 
     if not {{cookiecutter.pattern in ("jupyter", "js") }}:
         shutil.rmtree("js")
+        shutil.rmtree(".vscode")
     else:
         shutil.rmtree("js/src")
         shutil.rmtree("js/tests")
