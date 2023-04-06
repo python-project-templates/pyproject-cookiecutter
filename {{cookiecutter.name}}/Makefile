@@ -132,8 +132,10 @@ show-coverage: coverage-py  ## show interactive python coverage viewer
 
 {%- if cookiecutter.pattern in ("js", "jupyter") %}
 test: test-py test-js ## run all tests
+coverage: coverage-py test-js  ## run all tests with coverage collection
 {%- else %}
 test: test-py  ## run all tests
+coverage: coverage-py  ## run all tests with coverage collection
 {%- endif %}
 
 # Alias
