@@ -125,10 +125,7 @@ test-js: ## run javascript tests
 {%- endif %}
 
 coverage-py:  ## run tests and collect test coverage
-	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=junit.xml --cov={{cookiecutter.module}} --cov-report=xml:.coverage/coverage.xml --cov-report=html:.coverage/coverage.html --cov-branch --cov-fail-under=80 --cov-report term-missing
-
-show-coverage: coverage-py  ## show interactive python coverage viewer
-	cd .coverage && PYTHONBUFFERED=1 python -m http.server | sec -u "s/0\.0\.0\.0/$$(hostname)/g"
+	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=junit.xml --cov={{cookiecutter.module}} --cov-report=xml:.coverage/coverage.xml --cov-branch --cov-fail-under=80 --cov-report term-missing
 
 {%- if cookiecutter.pattern in ("js", "jupyter") %}
 test: test-py test-js ## run all tests
@@ -231,4 +228,4 @@ help:
 print-%:
 	@echo '$*=$($*)'
 
-.PHONY: develop build-py build-js build build install serverextension labextension lint-py lint-js lint-cpp lint lints fix-py fix-js fix-cpp fix format check-manifest checks check annotate semgrep test-py test-js coverage-py show-coverage test tests docs show-docs show-version patch minor major dist-py dist-py-sdist dist-py-local-wheel dist-check dist publish-py publish-js publish deep-clean clean help 
+.PHONY: develop build-py build-js build build install serverextension labextension lint-py lint-js lint-cpp lint lints fix-py fix-js fix-cpp fix format check-manifest checks check annotate semgrep test-py test-js coverage-py test tests docs show-docs show-version patch minor major dist-py dist-py-sdist dist-py-local-wheel dist-check dist publish-py publish-js publish deep-clean clean help 
