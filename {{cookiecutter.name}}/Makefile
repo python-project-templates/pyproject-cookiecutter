@@ -125,7 +125,7 @@ test-js: ## run javascript tests
 {%- endif %}
 
 coverage-py:  ## run tests and collect test coverage
-	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=junit.xml --cov={{cookiecutter.module}} --cov-branch --cov-fail-under=80 --cov-report term-missing
+	python -m pytest -v {{cookiecutter.module}}/tests --junitxml=junit.xml --cov={{cookiecutter.module}} --cov-branch --cov-fail-under=80 --cov-report term-missing --cov-report xml
 
 {%- if cookiecutter.pattern in ("js", "jupyter") %}
 test: test-py test-js ## run all tests
