@@ -70,8 +70,8 @@ lint: lint-py  ## run all lints
 lints: lint
 
 fix-py:  ## fix python formatting with black
-	python -m ruff {{cookiecutter.module}}/ setup.py --fix
 	python -m black {{cookiecutter.module}}/ setup.py
+	python -m ruff {{cookiecutter.module}}/ setup.py --fix
 
 {%- if cookiecutter.pattern in ("js", "jupyter") %}
 fix-js:  ## fix javascript formatting with eslint
