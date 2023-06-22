@@ -1,10 +1,10 @@
 python: $(eval SHELL:=/bin/bash)  ## Make example project (python)
 	{\
 		name="pyproject-cookiecutter-example";\
-		description="An example instance of [timkpaine/pyproject-cookiecutter](https://github.com/timkpaine/pyproject-cookiecutter), for testing";\
-		url="https://github.com/timkpaine/pyproject-cookiecutter";\
+		description="An example instance of [python-project-templates/pyproject-cookiecutter](https://github.com/python-project-templates/pyproject-cookiecutter), for testing";\
+		url="https://github.com/python-project-templates/pyproject-cookiecutter";\
 		author="Tim Paine";\
-		github_account="timkpaine";\
+		github_account="python-project-templates";\
 		email="t.paine154@gmail.com";\
 		pattern="1";\
 		configuration="$$name\n$$description\n$$url\n$$author\n$$github_account\n$$email\n$$pattern\n";\
@@ -14,10 +14,10 @@ python: $(eval SHELL:=/bin/bash)  ## Make example project (python)
 cpp: $(eval SHELL:=/bin/bash)  ## Make example project (c++)
 	{\
 		name="pyproject-cookiecutter-example";\
-		description="An example instance of [timkpaine/pyproject-cookiecutter](https://github.com/timkpaine/pyproject-cookiecutter), for testing";\
-		url="https://github.com/timkpaine/pyproject-cookiecutter";\
+		description="An example instance of [python-project-templates/pyproject-cookiecutter](https://github.com/python-project-templates/pyproject-cookiecutter), for testing";\
+		url="https://github.com/python-project-templates/pyproject-cookiecutter";\
 		author="Tim Paine";\
-		github_account="timkpaine";\
+		github_account="python-project-templates";\
 		email="t.paine154@gmail.com";\
 		pattern="2";\
 		configuration="$$name\n$$description\n$$url\n$$author\n$$github_account\n$$email\n$$pattern\n";\
@@ -27,10 +27,10 @@ cpp: $(eval SHELL:=/bin/bash)  ## Make example project (c++)
 jupyter: $(eval SHELL:=/bin/bash)  ## Make example project (python + js for jupyter)
 	{\
 		name="pyproject-cookiecutter-example";\
-		description="An example instance of [timkpaine/pyproject-cookiecutter](https://github.com/timkpaine/pyproject-cookiecutter), for testing";\
-		url="https://github.com/timkpaine/pyproject-cookiecutter";\
+		description="An example instance of [python-project-templates/pyproject-cookiecutter](https://github.com/python-project-templates/pyproject-cookiecutter), for testing";\
+		url="https://github.com/python-project-templates/pyproject-cookiecutter";\
 		author="Tim Paine";\
-		github_account="timkpaine";\
+		github_account="python-project-templates";\
 		email="t.paine154@gmail.com";\
 		pattern="5";\
 		configuration="$$name\n$$description\n$$url\n$$author\n$$github_account\n$$email\n$$pattern\n";\
